@@ -1,15 +1,15 @@
-import time
 import unittest
 
 from selenium import webdriver
+from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
 class ContactFormTest(unittest.TestCase):
     LINK = "https://unicreds.com/contact-us"
+    FIELD_REQUIRED_ERROR = "Field required"
 
     def setUp(self) -> None:
         self.driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -39,18 +39,18 @@ class ContactFormTest(unittest.TestCase):
 
         wait = WebDriverWait(self.driver, 2)
         wait.until(EC.text_to_be_present_in_element(
-            (By.XPATH, "//input[@name='fullname']/following-sibling::div"), "Field required")
+            (By.XPATH, "//input[@name='fullname']/following-sibling::div"), self.FIELD_REQUIRED_ERROR)
         )
         wait.until(EC.text_to_be_present_in_element(
-            (By.XPATH, "//input[@name='email']/following-sibling::div"), "Field required")
-        )
-
-        wait.until(EC.text_to_be_present_in_element(
-            (By.XPATH, "//input[@name='phone']/following-sibling::div"), "Field required")
+            (By.XPATH, "//input[@name='email']/following-sibling::div"), self.FIELD_REQUIRED_ERROR)
         )
 
         wait.until(EC.text_to_be_present_in_element(
-            (By.XPATH, "//textarea[@name='message']/following-sibling::div"), "Field required")
+            (By.XPATH, "//input[@name='phone']/following-sibling::div"), self.FIELD_REQUIRED_ERROR)
+        )
+
+        wait.until(EC.text_to_be_present_in_element(
+            (By.XPATH, "//textarea[@name='message']/following-sibling::div"), self.FIELD_REQUIRED_ERROR)
         )
 
 
